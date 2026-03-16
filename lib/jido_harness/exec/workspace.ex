@@ -1,10 +1,10 @@
 defmodule Jido.Harness.Exec.Workspace do
   @moduledoc """
-  Workspace lifecycle helpers backed by `Jido.Shell.SpriteLifecycle`.
+  Workspace lifecycle helpers backed by `Jido.Shell.Environment.Sprite`.
   """
 
   alias Jido.Harness.Exec.Error
-  alias Jido.Shell.SpriteLifecycle
+  alias Jido.Shell.Environment.Sprite
 
   @doc """
   Provisions a sprite-backed workspace/session for harness execution.
@@ -22,7 +22,7 @@ defmodule Jido.Harness.Exec.Workspace do
     if map_size(sprite_config) == 0 do
       {:error, Error.invalid("sprite_config is required for workspace provisioning", %{field: :sprite_config})}
     else
-      SpriteLifecycle.provision(workspace_id, sprite_config,
+      Sprite.provision(workspace_id, sprite_config,
         timeout: timeout,
         workspace_dir: workspace_dir,
         sprite_name: sprite_name,
@@ -37,6 +37,6 @@ defmodule Jido.Harness.Exec.Workspace do
   """
   @spec teardown_workspace(String.t(), keyword()) :: map()
   def teardown_workspace(session_id, opts \\ []) when is_binary(session_id) and is_list(opts) do
-    SpriteLifecycle.teardown(session_id, opts)
+    Sprite.teardown(session_id, opts)
   end
 end
